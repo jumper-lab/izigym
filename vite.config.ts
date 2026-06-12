@@ -1,0 +1,28 @@
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+
+export default defineConfig(() => ({
+  server: {
+    host: "::",
+    port: 8080,
+    proxy: {
+      "/api-evo": {
+        target: "https://evo-integracao-api.w12app.com.br",
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/api-evo/, ""),
+      },
+    },
+  },
+  plugins: [react()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  build: {
+    target: "es2020",
+    sourcemap: false,
+    chunkSizeWarningLimit: 1000,
+  },
+}));
