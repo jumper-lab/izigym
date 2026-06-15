@@ -72,7 +72,6 @@ const VideoGalleryItem = ({
   };
 
   const handlePlay = () => {
-    window.dispatchEvent(new CustomEvent("izi:pause-background-music"));
     sendPlayCommand();
     window.setTimeout(sendPlayCommand, 250);
     setIsStarted(true);

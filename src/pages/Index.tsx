@@ -7,7 +7,6 @@ import { FAQSection } from "@/components/gym/FAQSection";
 import { Footer } from "@/components/gym/Footer";
 import { WhatsAppButton } from "@/components/gym/WhatsAppButton";
 import { StickyMobileCTA } from "@/components/gym/StickyMobileCTA";
-import { BackgroundMusic } from "@/components/gym/BackgroundMusic";
 
 const Index = () => {
   return (
@@ -29,7 +28,6 @@ const Index = () => {
         <FAQSection />
       </main>
       <Footer />
-      <BackgroundMusic />
       <WhatsAppButton />
       <StickyMobileCTA />
     </>
