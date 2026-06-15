@@ -22,10 +22,10 @@ export default {
         xs: "420px",
       },
       colors: {
-        primary: "#FE5641", // Changed from #111111 to terracotta
+        primary: "#E52C12", // PANTONE 2028 C
         "background-light": "#F5F5F5",
         "background-dark": "#121212",
-        "section-gray": "#515254", // Nova cor adicionada
+        "section-gray": "#000000",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

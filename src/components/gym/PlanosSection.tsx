@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchPlans, type MembershipPlan } from "@/services/api";
 import { PlanCard } from "./PlanCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Reveal } from "@/components/Reveal";
 
 // Helpers de formatação ---------------------------------------------------
 
@@ -79,7 +80,7 @@ export const PlanosSection = () => {
 
   if (isError) {
     return (
-      <section className="py-24 px-6 bg-section-gray" id="planos">
+      <section className="scroll-mt-16 py-20 px-5 sm:px-6 bg-section-gray" id="planos">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Erro ao carregar os planos.
@@ -93,48 +94,49 @@ export const PlanosSection = () => {
   }
 
   return (
-    <section className="py-24 px-6 bg-section-gray" id="planos">
-      <div className="max-w-7xl mx-auto space-y-16">
-        <div className="max-w-3xl text-center mx-auto">
-          <span className="text-xs uppercase tracking-[0.3em] text-zinc-400 mb-4 block">
+    <section className="scroll-mt-16 py-14 px-5 sm:px-6 lg:py-20 bg-section-gray lg:min-h-screen lg:flex lg:items-center" id="planos">
+      <div className="max-w-7xl mx-auto w-full space-y-8 lg:space-y-10">
+        <Reveal className="max-w-3xl text-center mx-auto">
+          <span className="text-[11px] sm:text-xs uppercase tracking-[0.28em] sm:tracking-[0.3em] text-zinc-400 mb-4 block">
             Nossos Planos
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight text-white">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5 leading-tight text-white">
             Seu caminho para
             <br />
             estar bem.
           </h2>
-          <p className="text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed">
             Sua jornada de bem-estar, mais simples do que você imagina: um plano
             completo, duas opções de pagamento e uma rotina de treinos com tudo
             o que você precisa para alcançar seus objetivos.
           </p>
-        </div>
+        </Reveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-stretch max-w-6xl mx-auto">
           {isLoading ? (
             <>
               <Skeleton className="h-[450px] rounded-2xl bg-zinc-800" />
               <Skeleton className="h-[450px] rounded-2xl bg-zinc-800" />
             </>
           ) : (
-            plans?.map((plan) => {
+            plans?.map((plan, index) => {
               const pricing = getPlanPricing(plan);
               return (
-                <PlanCard
-                  key={plan.idMembership}
-                  title={plan.nameMembership}
-                  description={plan.description}
-                  price={pricing.price}
-                  priceSuffix="/mês"
-                  buttonText="Matricule-se Agora"
-                  isFeatured={plan.nameMembership.toLowerCase().includes("prime")}
-                  features={plan.differentials.map((d) => ({ name: d.title }))}
-                  urlSale={plan.urlSale}
-                  isPromo={pricing.isPromo}
-                  originalPrice={pricing.originalPrice}
-                  promoLabel={pricing.promoLabel}
-                />
+                <Reveal key={plan.idMembership} delay={index * 120} className="h-full">
+                  <PlanCard
+                    title={plan.nameMembership}
+                    description={plan.description}
+                    price={pricing.price}
+                    priceSuffix="/mês"
+                    buttonText="Matricule-se Agora"
+                    isFeatured={plan.nameMembership.toLowerCase().includes("prime")}
+                    features={plan.differentials.map((d) => ({ name: d.title }))}
+                    urlSale={plan.urlSale}
+                    isPromo={pricing.isPromo}
+                    originalPrice={pricing.originalPrice}
+                    promoLabel={pricing.promoLabel}
+                  />
+                </Reveal>
               );
             })
           )}

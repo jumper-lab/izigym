@@ -1,11 +1,12 @@
 import React from "react";
-import { Plus, Minus } from "lucide-react";
+import { ArrowUpRight, Minus, Plus } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Reveal } from "@/components/Reveal";
 
 const faqItems = [
   {
@@ -54,20 +55,29 @@ const faqItems = [
   },
 ];
 
-const FaqColumn = ({ items }: { items: typeof faqItems }) => (
-  <Accordion type="single" collapsible className="w-full">
+const FaqList = ({ items }: { items: typeof faqItems }) => (
+  <Accordion type="single" collapsible className="w-full space-y-3">
     {items.map((item, index) => (
       <AccordionItem
         key={index}
         value={`item-${index}`}
-        className="border-b border-zinc-700 py-4"
+        className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] px-4 sm:px-5 transition-all duration-500 ease-soft hover:border-white/20 hover:bg-white/[0.055]"
       >
-        <AccordionTrigger className="text-md font-medium text-left text-white hover:no-underline group">
-          <span className="flex-1 pr-4">{item.question}</span>
-          <Plus className="h-5 w-5 shrink-0 text-primary transition-transform duration-200 group-data-[state=open]:hidden" />
-          <Minus className="h-5 w-5 shrink-0 text-primary transition-transform duration-200 group-data-[state=closed]:hidden" />
+        <AccordionTrigger className="group/trigger py-4 sm:py-5 text-left hover:no-underline [&>svg:last-child]:hidden">
+          <span className="flex items-center gap-3 sm:gap-4">
+            <span className="hidden text-xs font-bold tabular-nums tracking-[0.18em] text-primary/80 sm:block">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="text-sm sm:text-base font-semibold leading-snug text-white transition-colors duration-500 ease-soft group-hover:text-zinc-100">
+              {item.question}
+            </span>
+          </span>
+          <span className="ml-3 sm:ml-5 flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-black/20 text-primary transition-all duration-500 ease-soft group-hover:border-primary/30 group-hover:bg-primary/10">
+            <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-500 ease-soft group-data-[state=open]/trigger:rotate-45 group-data-[state=open]/trigger:opacity-0" />
+            <Minus className="absolute h-3.5 w-3.5 sm:h-4 sm:w-4 opacity-0 transition-all duration-500 ease-soft group-data-[state=open]/trigger:opacity-100" />
+          </span>
         </AccordionTrigger>
-        <AccordionContent className="text-zinc-400 text-base pt-4 pr-8">
+        <AccordionContent className="pb-5 pl-0 text-sm sm:text-base leading-relaxed text-zinc-400 sm:pl-12 sm:pr-12">
           {item.answer}
         </AccordionContent>
       </AccordionItem>
@@ -76,29 +86,45 @@ const FaqColumn = ({ items }: { items: typeof faqItems }) => (
 );
 
 export const FAQSection = () => {
-  const half = Math.ceil(faqItems.length / 2);
-  const firstHalf = faqItems.slice(0, half);
-  const secondHalf = faqItems.slice(half);
-
   return (
-    <section className="py-24 px-6 bg-section-gray" id="faq">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <span className="text-xs uppercase tracking-[0.3em] text-zinc-400 mb-4 block">
-            Perguntas Frequentes
+    <section className="scroll-mt-16 bg-section-gray px-5 sm:px-6 py-16 lg:py-24" id="faq">
+      <div className="mx-auto grid max-w-7xl gap-8 lg:gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+        <Reveal className="lg:sticky lg:top-28">
+          <span className="mb-4 sm:mb-5 block text-[11px] sm:text-xs uppercase tracking-[0.28em] sm:tracking-[0.3em] text-zinc-500">
+            Perguntas frequentes
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold font-display leading-tight text-white">
-            Tudo o que você precisa saber.
+          <h2 className="max-w-xl text-4xl font-bold leading-tight text-white md:text-6xl">
+            Antes de começar, resolva o essencial.
           </h2>
-          <p className="text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed mt-4">
-            Ainda tem dúvidas? Encontre aqui as respostas para as perguntas mais comuns sobre nossos planos, estrutura e funcionamento.
+          <p className="mt-5 sm:mt-6 max-w-md text-base sm:text-lg leading-relaxed text-zinc-400">
+            Reunimos as respostas que costumam decidir matrícula, rotina e uso da estrutura.
           </p>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-12 lg:gap-x-20">
-          <FaqColumn items={firstHalf} />
-          <FaqColumn items={secondHalf} />
-        </div>
+          <div className="mt-7 sm:mt-9 flex flex-wrap gap-2">
+            {["Planos", "Estrutura", "Rotina"].map((label) => (
+              <span
+                key={label}
+                className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-zinc-400"
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+
+          <a
+            href="https://wa.me/5511952137022"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 sm:mt-10 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-5 py-3 text-[12px] font-bold uppercase tracking-[0.16em] text-primary transition-all duration-500 ease-soft hover:border-primary/60 hover:bg-primary/15"
+          >
+            Falar com a equipe
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </a>
+        </Reveal>
+
+        <Reveal delay={120}>
+          <FaqList items={faqItems} />
+        </Reveal>
       </div>
     </section>
   );

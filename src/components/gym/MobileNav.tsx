@@ -13,16 +13,19 @@ import { Separator } from "@/components/ui/separator";
 
 interface MobileNavProps {
   handleSmoothScroll: (event: React.MouseEvent<HTMLAnchorElement>, targetId: string) => void;
+  isHeaderScrolled?: boolean;
 }
 
 const navItems = [
   { name: "HOME", href: "#unidade" },
   { name: "PLANOS", href: "#planos" },
   { name: "UNIDADE", href: "#pass" },
+  { name: "INTERIOR", href: "#galeria" },
   { name: "FAQ", href: "#faq" },
+  { name: "CONTATO", href: "#contato" },
 ];
 
-export const MobileNav: React.FC<MobileNavProps> = ({ handleSmoothScroll }) => {
+export const MobileNav: React.FC<MobileNavProps> = ({ handleSmoothScroll, isHeaderScrolled = false }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleNavigationClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
@@ -33,18 +36,22 @@ export const MobileNav: React.FC<MobileNavProps> = ({ handleSmoothScroll }) => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Menu className="h-6 w-6" />
+        <Button
+          variant="ghost"
+          size="icon"
+          className={isHeaderScrolled ? "h-10 w-10 rounded-full text-zinc-900 transition-colors duration-500 ease-soft hover:bg-zinc-100" : "h-10 w-10 rounded-full text-white transition-colors duration-500 ease-soft hover:bg-white/10"}
+        >
+          <Menu className="h-5 w-5" />
           <span className="sr-only">Abrir menu de navegação</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] sm:w-[400px] bg-background-light dark:bg-zinc-900 flex flex-col p-0">
+      <SheetContent side="left" className="w-[min(86vw,360px)] bg-background-light dark:bg-zinc-900 flex flex-col p-0">
         <SheetHeader className="p-6 pb-4">
           <SheetTitle>
             <img
-              src="https://raw.githubusercontent.com/cleitonSam/img/refs/heads/main/IZI%20(2)%20(1).png"
+              src="/brand/izi-logo-tight.png"
               alt="IZI ONE Logo"
-              className="h-16 w-auto"
+              className="h-8 w-auto"
             />
           </SheetTitle>
           <SheetDescription className="sr-only">
@@ -53,14 +60,14 @@ export const MobileNav: React.FC<MobileNavProps> = ({ handleSmoothScroll }) => {
         </SheetHeader>
         <Separator className="bg-zinc-200 dark:bg-zinc-700" />
         
-        <nav className="flex-grow p-6">
-          <ul className="flex flex-col space-y-2">
+        <nav className="flex-grow p-5">
+          <ul className="flex flex-col space-y-1">
             {navItems.map((item) => (
               <li key={item.name}>
                 <a
                   href={item.href}
                   onClick={(e) => handleNavigationClick(e, item.href.substring(1))}
-                  className="block text-base font-medium p-3 rounded-md text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                  className="block rounded-xl px-3 py-3 text-sm font-medium uppercase tracking-[0.14em] text-zinc-700 transition-colors duration-500 ease-soft hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 >
                   {item.name}
                 </a>
@@ -69,16 +76,16 @@ export const MobileNav: React.FC<MobileNavProps> = ({ handleSmoothScroll }) => {
           </ul>
         </nav>
 
-        <div className="mt-auto p-6 space-y-6 border-t border-zinc-200 dark:border-zinc-700">
+        <div className="mt-auto space-y-5 border-t border-zinc-200 p-5 dark:border-zinc-700">
           <a 
             href="#planos" 
             onClick={(e) => handleNavigationClick(e, "planos")}
-            className="w-full bg-primary text-white px-6 py-3 rounded-lg text-sm font-bold uppercase tracking-wide hover:opacity-90 transition-opacity text-center block"
+            className="block w-full rounded-full border border-primary bg-primary px-6 py-3 text-center text-sm font-bold uppercase tracking-wide text-white shadow-[0_8px_22px_rgba(229,44,18,0.18)] transition-all duration-500 ease-soft hover:-translate-y-px hover:bg-primary/30 hover:shadow-none"
           >
             Matricule-se
           </a>
           <div className="flex items-center justify-center space-x-4">
-            <a href="https://www.instagram.com/izigym.brasil" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-primary">
+            <a href="https://www.instagram.com/izigym.brasil" target="_blank" rel="noopener noreferrer" className="text-zinc-500 transition-colors duration-500 ease-soft hover:text-primary">
               <Instagram className="h-6 w-6" />
             </a>
           </div>
