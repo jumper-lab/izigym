@@ -5,7 +5,7 @@ const VIDEO_ID = "4LyI3_2WWg0";
 
 export const BackgroundMusic = () => {
   const playerRef = React.useRef<HTMLIFrameElement>(null);
-  const [isMuted, setIsMuted] = React.useState(false);
+  const [isMuted, setIsMuted] = React.useState(true);
 
   const sendPlayerCommand = React.useCallback((func: string, args: unknown[] = []) => {
     playerRef.current?.contentWindow?.postMessage(
@@ -18,12 +18,22 @@ export const BackgroundMusic = () => {
     );
   }, []);
 
+  const enableAudio = React.useCallback(() => {
+    sendPlayerCommand("playVideo");
+    sendPlayerCommand("setVolume", [42]);
+    sendPlayerCommand("unMute");
+    setIsMuted(false);
+  }, [sendPlayerCommand]);
+
   React.useEffect(() => {
     const timer = window.setTimeout(() => {
       sendPlayerCommand("playVideo");
-      sendPlayerCommand("setVolume", [42]);
-      sendPlayerCommand("unMute");
+      sendPlayerCommand("mute");
     }, 1200);
+
+    const enableOnFirstInteraction = () => {
+      enableAudio();
+    };
 
     const pauseBackgroundMusic = () => {
       sendPlayerCommand("mute");
@@ -31,20 +41,25 @@ export const BackgroundMusic = () => {
       setIsMuted(true);
     };
 
+    window.addEventListener("pointerdown", enableOnFirstInteraction, { once: true, passive: true });
+    window.addEventListener("touchstart", enableOnFirstInteraction, { once: true, passive: true });
+    window.addEventListener("keydown", enableOnFirstInteraction, { once: true });
+    window.addEventListener("wheel", enableOnFirstInteraction, { once: true, passive: true });
     window.addEventListener("izi:pause-background-music", pauseBackgroundMusic);
 
     return () => {
       window.clearTimeout(timer);
+      window.removeEventListener("pointerdown", enableOnFirstInteraction);
+      window.removeEventListener("touchstart", enableOnFirstInteraction);
+      window.removeEventListener("keydown", enableOnFirstInteraction);
+      window.removeEventListener("wheel", enableOnFirstInteraction);
       window.removeEventListener("izi:pause-background-music", pauseBackgroundMusic);
     };
-  }, [sendPlayerCommand]);
+  }, [enableAudio, sendPlayerCommand]);
 
   const toggleAudio = () => {
     if (isMuted) {
-      sendPlayerCommand("playVideo");
-      sendPlayerCommand("setVolume", [42]);
-      sendPlayerCommand("unMute");
-      setIsMuted(false);
+      enableAudio();
       return;
     }
 
@@ -57,7 +72,7 @@ export const BackgroundMusic = () => {
       <iframe
         ref={playerRef}
         title="Trilha sonora IZI GYM"
-        src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}?enablejsapi=1&autoplay=1&mute=0&controls=0&loop=1&playlist=${VIDEO_ID}&playsinline=1&start=12&rel=0&modestbranding=1`}
+        src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playlist=${VIDEO_ID}&playsinline=1&start=12&rel=0&modestbranding=1`}
         className="pointer-events-none fixed -left-[9999px] top-0 h-px w-px opacity-0"
         allow="autoplay; encrypted-media"
         aria-hidden="true"
