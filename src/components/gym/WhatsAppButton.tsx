@@ -7,7 +7,7 @@ import React from "react";
 export const WhatsAppButton = () => {
   const phone = "5511952137022";
   const message = encodeURIComponent(
-    "Olá! Gostaria de saber mais sobre os planos da IZI ONE.",
+    "Olá! Gostaria de saber mais sobre os planos da IZI Gym.",
   );
   const href = `https://wa.me/${phone}?text=${message}`;
 
@@ -17,7 +17,7 @@ export const WhatsAppButton = () => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Conversar com a IZI ONE pelo WhatsApp"
+      aria-label="Conversar com a IZI Gym pelo WhatsApp"
     >
       {/* Ícone WhatsApp inline (SVG) — sem dependência de imagem externa */}
       <svg

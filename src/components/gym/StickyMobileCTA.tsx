@@ -10,7 +10,7 @@ import { ArrowRight } from "lucide-react";
  */
 export const StickyMobileCTA: React.FC = () => {
   const whatsappHref = `https://wa.me/5511952137022?text=${encodeURIComponent(
-    "Olá! Gostaria de saber mais sobre os planos da IZI ONE.",
+    "Olá! Gostaria de saber mais sobre os planos da IZI Gym.",
   )}`;
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
