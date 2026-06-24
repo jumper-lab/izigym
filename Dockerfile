@@ -29,7 +29,7 @@ ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 RUN pnpm build
 
 # ===== Stage 2: Runtime (Nginx servindo estático) =====
-FROM nginx:1.27-alpine AS runner
+FROM nginx:1.31.2-alpine AS runner
 
 # Configuração customizada (SPA fallback + proxy /api-evo)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
