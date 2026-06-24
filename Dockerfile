@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.6
 
 # ===== Stage 1: Build =====
-FROM node:20-alpine AS builder
+FROM node:26-alpine AS builder
 
 # Habilita pnpm via corepack (sem precisar instalar globalmente)
 RUN corepack enable
