@@ -18,6 +18,10 @@ export const queryClient = new QueryClient({
 // Em dev passa pelo proxy do vite.config.ts; em prod pelo proxy do nginx.conf.
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "/api-evo/api/v2";
 const API_AUTH_TOKEN = import.meta.env.VITE_API_AUTH_TOKEN;
+const LEGACY_CHECKOUT_PREFIX =
+  "https://evo-totem.w12app.com.br/izione/1/site/landing-page/checkout/";
+const CURRENT_CHECKOUT_URL =
+  "https://vendas.online.sistemapacto.com.br/planos?un=1&k=6e2660773cc378e250e6a8731d6830e5";
 
 if (!API_AUTH_TOKEN) {
   // Aviso em dev pra detectar config faltando antes de virar 401 silencioso.
@@ -125,6 +129,12 @@ async function fetchWithTimeout(
   }
 }
 
+function normalizeSaleUrl(urlSale: string) {
+  return urlSale.startsWith(LEGACY_CHECKOUT_PREFIX)
+    ? CURRENT_CHECKOUT_URL
+    : urlSale;
+}
+
 // Endpoints --------------------------------------------------------------
 
 export async function fetchPlans(): Promise<MembershipPlan[]> {
@@ -158,10 +168,15 @@ export async function fetchPlans(): Promise<MembershipPlan[]> {
 
   // Filtra: planos ativos, com URL de venda, e que não sejam variantes "Day"
   // (passe diário não faz parte do funil principal de matrícula).
-  return data.list.filter(
-    (plan) =>
-      !plan.inactive &&
-      Boolean(plan.urlSale) &&
-      !plan.nameMembership.toLowerCase().includes("day"),
-  );
+  return data.list
+    .filter(
+      (plan) =>
+        !plan.inactive &&
+        Boolean(plan.urlSale) &&
+        !plan.nameMembership.toLowerCase().includes("day"),
+    )
+    .map((plan) => ({
+      ...plan,
+      urlSale: normalizeSaleUrl(plan.urlSale),
+    }));
 }
