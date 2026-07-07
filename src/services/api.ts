@@ -22,6 +22,8 @@ const LEGACY_CHECKOUT_PREFIX =
   "https://evo-totem.w12app.com.br/izione/1/site/landing-page/checkout/";
 const CURRENT_CHECKOUT_URL =
   "https://vendas.online.sistemapacto.com.br/planos?un=1&k=6e2660773cc378e250e6a8731d6830e5";
+const PRIME_MEMBERSHIP_ID = 6;
+const PRIME_FIRST_MONTH_PROMO_VALUE = 7;
 
 if (!API_AUTH_TOKEN) {
   // Aviso em dev pra detectar config faltando antes de virar 401 silencioso.
@@ -135,6 +137,21 @@ function normalizeSaleUrl(urlSale: string) {
     : urlSale;
 }
 
+function applyCampaignOverrides(plan: MembershipPlan): MembershipPlan {
+  if (
+    plan.idMembership === PRIME_MEMBERSHIP_ID &&
+    plan.nameMembership.trim().toLowerCase() === "izi prime"
+  ) {
+    return {
+      ...plan,
+      valuePromotionalPeriod: PRIME_FIRST_MONTH_PROMO_VALUE,
+      monthsPromotionalPeriod: Math.max(plan.monthsPromotionalPeriod, 1),
+    };
+  }
+
+  return plan;
+}
+
 // Endpoints --------------------------------------------------------------
 
 export async function fetchPlans(): Promise<MembershipPlan[]> {
@@ -176,7 +193,7 @@ export async function fetchPlans(): Promise<MembershipPlan[]> {
         !plan.nameMembership.toLowerCase().includes("day"),
     )
     .map((plan) => ({
-      ...plan,
+      ...applyCampaignOverrides(plan),
       urlSale: normalizeSaleUrl(plan.urlSale),
     }));
 }
