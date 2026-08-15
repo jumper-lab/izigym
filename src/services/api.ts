@@ -15,22 +15,14 @@ export const queryClient = new QueryClient({
 
 // Configuração ----------------------------------------------------------
 
-// Em dev passa pelo proxy do vite.config.ts; em prod pelo proxy do nginx.conf.
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "/api-evo/api/v2";
-const API_AUTH_TOKEN = import.meta.env.VITE_API_AUTH_TOKEN;
+// Frontend chama uma Function server-side; tokens da EVO/W12 não ficam no bundle público.
+const API_BASE_URL = "/api";
 const LEGACY_CHECKOUT_PREFIX =
   "https://evo-totem.w12app.com.br/izione/1/site/landing-page/checkout/";
 const CURRENT_CHECKOUT_URL =
   "https://vendas.online.sistemapacto.com.br/planos?un=1&k=6e2660773cc378e250e6a8731d6830e5";
 const PRIME_MEMBERSHIP_ID = 6;
 const PRIME_FIRST_MONTH_PROMO_VALUE = 8;
-
-if (!API_AUTH_TOKEN) {
-  // Aviso em dev pra detectar config faltando antes de virar 401 silencioso.
-  console.warn(
-    "[api] VITE_API_AUTH_TOKEN não definido — chamadas à EVO vão falhar com 401.",
-  );
-}
 
 const REQUEST_TIMEOUT_MS = 15_000;
 
@@ -161,7 +153,6 @@ export async function fetchPlans(): Promise<MembershipPlan[]> {
     method: "GET",
     headers: {
       Accept: "application/json",
-      Authorization: `Basic ${API_AUTH_TOKEN}`,
     },
   });
 
