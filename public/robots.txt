@@ -3,7 +3,6 @@
 
 User-agent: *
 Allow: /
-Disallow: /api-evo/
 
 # Bloqueia bots agressivos / scrapers de conteúdo
 User-agent: GPTBot

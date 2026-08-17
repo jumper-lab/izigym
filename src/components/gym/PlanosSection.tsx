@@ -1,8 +1,6 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchPlans, type MembershipPlan } from "@/services/api";
+import { plans, type GymPlan } from "@/data/plans";
 import { PlanCard } from "./PlanCard";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Reveal } from "@/components/Reveal";
 
 // Helpers de formatação ---------------------------------------------------
@@ -31,41 +29,35 @@ const formatBRL = (value: number) => {
  * Decide se um plano está em promoção e calcula os campos derivados
  * (preço efetivo, preço original riscado, label de duração).
  *
- * Critério: API EVO retorna valuePromotionalPeriod > 0 quando o plano
- * tem preço promocional ativo.
+ * Um preço promocional menor que o valor mensal ativa a apresentação de oferta.
  */
-function getPlanPricing(plan: MembershipPlan) {
+function getPlanPricing(plan: GymPlan) {
   const hasPromo =
-    typeof plan.valuePromotionalPeriod === "number" &&
-    plan.valuePromotionalPeriod > 0 &&
-    plan.valuePromotionalPeriod < plan.value;
+    typeof plan.promotionalPrice === "number" &&
+    plan.promotionalPrice > 0 &&
+    plan.promotionalPrice < plan.price;
 
   if (!hasPromo) {
     return {
       isPromo: false as const,
-      price: formatBRL(plan.value),
+      price: formatBRL(plan.price),
       originalPrice: undefined,
       promoLabel: undefined,
     };
   }
 
   let promoLabel: string | undefined;
-  if (plan.monthsPromotionalPeriod && plan.monthsPromotionalPeriod > 0) {
+  if (plan.promotionalMonths && plan.promotionalMonths > 0) {
     promoLabel =
-      plan.monthsPromotionalPeriod === 1
+      plan.promotionalMonths === 1
         ? "1 mês promocional"
-        : `${plan.monthsPromotionalPeriod} meses promocionais`;
-  } else if (plan.daysPromotionalPeriod && plan.daysPromotionalPeriod > 0) {
-    promoLabel =
-      plan.daysPromotionalPeriod === 1
-        ? "1 dia promocional"
-        : `${plan.daysPromotionalPeriod} dias promocionais`;
+        : `${plan.promotionalMonths} meses promocionais`;
   }
 
   return {
     isPromo: true as const,
-    price: formatBRL(plan.valuePromotionalPeriod),
-    originalPrice: formatBRL(plan.value),
+    price: formatBRL(plan.promotionalPrice),
+    originalPrice: formatBRL(plan.price),
     promoLabel,
   };
 }
@@ -73,26 +65,6 @@ function getPlanPricing(plan: MembershipPlan) {
 // -------------------------------------------------------------------------
 
 export const PlanosSection = () => {
-  const { data: plans, isLoading, isError } = useQuery({
-    queryKey: ["plans"],
-    queryFn: fetchPlans,
-  });
-
-  if (isError) {
-    return (
-      <section className="scroll-mt-16 py-20 px-5 sm:px-6 bg-section-gray" id="planos">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Erro ao carregar os planos.
-          </h2>
-          <p className="text-zinc-300">
-            Por favor, tente novamente mais tarde.
-          </p>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className="scroll-mt-16 py-14 px-5 sm:px-6 lg:py-20 bg-section-gray lg:min-h-screen lg:flex lg:items-center" id="planos">
       <div className="max-w-7xl mx-auto w-full space-y-8 lg:space-y-10">
@@ -113,33 +85,26 @@ export const PlanosSection = () => {
         </Reveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-stretch max-w-6xl mx-auto">
-          {isLoading ? (
-            <>
-              <Skeleton className="h-[450px] rounded-2xl bg-zinc-800" />
-              <Skeleton className="h-[450px] rounded-2xl bg-zinc-800" />
-            </>
-          ) : (
-            plans?.map((plan, index) => {
-              const pricing = getPlanPricing(plan);
-              return (
-                <Reveal key={plan.idMembership} delay={index * 120} className="h-full">
-                  <PlanCard
-                    title={plan.nameMembership}
-                    description={plan.description}
-                    price={pricing.price}
-                    priceSuffix="/mês"
-                    buttonText="Matricule-se Agora"
-                    isFeatured={plan.nameMembership.toLowerCase().includes("prime")}
-                    features={plan.differentials.map((d) => ({ name: d.title }))}
-                    urlSale={plan.urlSale}
-                    isPromo={pricing.isPromo}
-                    originalPrice={pricing.originalPrice}
-                    promoLabel={pricing.promoLabel}
-                  />
-                </Reveal>
-              );
-            })
-          )}
+          {plans.map((plan, index) => {
+            const pricing = getPlanPricing(plan);
+            return (
+              <Reveal key={plan.id} delay={index * 120} className="h-full">
+                <PlanCard
+                  title={plan.name}
+                  description={plan.description}
+                  price={pricing.price}
+                  priceSuffix="/mês"
+                  buttonText="Matricule-se Agora"
+                  isFeatured={plan.name.toLowerCase().includes("prime")}
+                  features={plan.features.map((name) => ({ name }))}
+                  urlSale={plan.checkoutUrl}
+                  isPromo={pricing.isPromo}
+                  originalPrice={pricing.originalPrice}
+                  promoLabel={pricing.promoLabel}
+                />
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
