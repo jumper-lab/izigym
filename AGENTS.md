@@ -6,7 +6,7 @@ Briefing para LLMs que iniciam trabalho neste repositório.
 
 ## Project Overview
 
-Site institucional (landing page single-page) da **IZI ONE / IZI Gym**, academia em Alto de Pinheiros, São Paulo. O site exibe informações da unidade, planos de membership (buscados via API), galeria do espaço, FAQ e contato.
+Site institucional (landing page single-page) da **IZI ONE / IZI Gym**, academia em Alto de Pinheiros, São Paulo. O site exibe informações da unidade, planos cadastrados no projeto, galeria do espaço, FAQ e contato.
 
 - **Tipo:** SPA (Single Page Application) — uma rota (`/`) com seções.
 - **Cliente:** IZI Gym (academia).
@@ -23,7 +23,6 @@ Site institucional (landing page single-page) da **IZI ONE / IZI Gym**, academia
 | Linguagem | TypeScript | 5.5 |
 | Estilo | Tailwind CSS | 3.4 |
 | UI Components | shadcn/ui (Radix primitives) | — |
-| Data Fetching | TanStack Query (react-query) | 5 |
 | Roteamento | React Router DOM | 6 |
 | Animações | Framer Motion | 12 |
 | Forms | React Hook Form + Zod | — |
@@ -35,7 +34,7 @@ Site institucional (landing page single-page) da **IZI ONE / IZI Gym**, academia
 ## Commands
 
 ```bash
-pnpm dev        # Dev server na porta 8080 com proxy /api-evo
+pnpm dev        # Dev server na porta 8080
 pnpm build      # Build de produção (output em dist/)
 pnpm build:dev  # Build em modo development
 pnpm lint       # ESLint (flat config)
@@ -65,7 +64,7 @@ src/
 │   │   ├── Header.tsx          # Navbar fixa com glassmorphism no scroll
 │   │   ├── MobileNav.tsx       # Menu mobile (sheet)
 │   │   ├── UnidadeSection.tsx  # Hero / seção da unidade
-│   │   ├── PlanosSection.tsx   # Planos de membership (busca API)
+│   │   ├── PlanosSection.tsx   # Planos de membership
 │   │   ├── PlanCard.tsx        # Card individual de plano
 │   │   ├── LocationsSection.tsx# Localização
 │   │   ├── GallerySection.tsx  # Galeria de fotos
@@ -77,8 +76,8 @@ src/
 │   └── ui/                     # shadcn/ui — NÃO EDITAR manualmente
 │       └── (40+ componentes)   # Adicionar via: npx shadcn@latest add <component>
 │
-├── services/
-│   └── api.ts                  # API EVO/W12 — fetchPlans, tipos, QueryClient
+├── data/
+│   └── plans.ts                # Planos e checkout do Sistema Pacto
 │
 ├── hooks/
 │   ├── use-mobile.tsx          # Hook de detecção mobile
@@ -127,13 +126,10 @@ Branch `main` é protegida — sempre trabalhar em branches feature/fix e abrir 
 
 ## Architecture Notes
 
-### API EVO/W12
-- O site busca planos de membership da API `evo-integracao-api.w12app.com.br`.
-- **Em dev:** proxy do Vite redireciona `/api-evo` → API real (`vite.config.ts`).
-- **Em prod:** rewrite do Vercel faz o mesmo (`vercel.json`).
-- Autenticação: Basic Auth via `VITE_API_AUTH_TOKEN` (variável de ambiente, nunca commitar).
-- Função principal: `fetchPlans()` em `src/services/api.ts` — busca, filtra planos ativos, normaliza URLs de checkout.
-- O `QueryClient` está configurado com `staleTime: 5min`, `refetchOnWindowFocus: false`, `retry: 1`.
+### Planos e checkout
+- Os planos são definidos em `src/data/plans.ts`.
+- Todos os botões de matrícula usam o checkout do Sistema Pacto.
+- Não há integração externa nem variável de ambiente para carregar planos.
 
 ### Animações
 - `Reveal.tsx`: animação de entrada via IntersectionObserver (translate-y + opacity). Respeita `prefers-reduced-motion`.
@@ -147,22 +143,11 @@ Branch `main` é protegida — sempre trabalhar em branches feature/fix e abrir 
 
 ---
 
-## Environment Variables
-
-```bash
-VITE_API_AUTH_TOKEN=         # Token Basic auth da API EVO (obrigatório em prod)
-VITE_API_BASE_URL=/api-evo/api/v2  # Base URL da API (default funciona com proxy)
-```
-
-Copiar `.env.example` para `.env` para rodar localmente. O token é configurado no painel da Vercel para deploy.
-
----
-
 ## Deploy
 
 - **Primário:** Vercel (pnpm, build command `pnpm run build`, output `dist/`).
 - **Alternativo:** Dockerfile + nginx.conf para deploy em container.
-- `vercel.json` configura rewrites para API proxy e fallback SPA.
+- `vercel.json` configura o fallback SPA.
 
 ---
 
@@ -170,12 +155,12 @@ Copiar `.env.example` para `.env` para rodar localmente. O token é configurado 
 
 | Arquivo | Função |
 |---|---|
-| `src/services/api.ts` | Toda lógica de API, tipos de plano, QueryClient |
+| `src/data/plans.ts` | Planos e checkout do Sistema Pacto |
 | `src/pages/Index.tsx` | Composição da landing page |
 | `src/components/gym/PlanosSection.tsx` | Seção de planos (consome API) |
 | `src/components/gym/Header.tsx` | Navbar com glassmorphism |
 | `src/components/Reveal.tsx` | Animação de entrada reutilizável |
 | `src/globals.css` | Variáveis CSS, animações, reset |
 | `tailwind.config.ts` | Tema, cores (primary: #E52C12), fontes (Outfit) |
-| `vite.config.ts` | Proxy API, alias, build config |
+| `vite.config.ts` | Alias e configuração de build |
 | `components.json` | Configuração shadcn/ui |

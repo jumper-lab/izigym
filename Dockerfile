@@ -17,21 +17,13 @@ RUN pnpm install --frozen-lockfile
 # Copia o restante do código
 COPY . .
 
-# Variáveis VITE_* precisam estar disponíveis em BUILD TIME
-# (são "queimadas" no bundle gerado pelo Vite).
-# No Easypanel, configure como Build Args.
-ARG VITE_API_AUTH_TOKEN
-ARG VITE_API_BASE_URL=/api-evo/api/v2
-ENV VITE_API_AUTH_TOKEN=${VITE_API_AUTH_TOKEN}
-ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
-
 # Build de produção do Vite (gera /app/dist)
 RUN pnpm build
 
 # ===== Stage 2: Runtime (Nginx servindo estático) =====
 FROM nginx:1.27-alpine AS runner
 
-# Configuração customizada (SPA fallback + proxy /api-evo)
+# Configuração customizada para fallback da SPA
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Artefatos do build
