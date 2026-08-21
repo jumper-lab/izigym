@@ -21,7 +21,7 @@ COPY . .
 RUN pnpm build
 
 # ===== Stage 2: Runtime (Nginx servindo estático) =====
-FROM nginx:1.27-alpine AS runner
+FROM nginx:1.30-alpine AS runner
 
 # Configuração customizada para fallback da SPA
 COPY nginx.conf /etc/nginx/conf.d/default.conf
