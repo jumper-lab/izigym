@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { DeferredSection } from "@/components/DeferredSection";
 import { Header } from "@/components/gym/Header";
 import { UnidadeSection } from "@/components/gym/UnidadeSection";
@@ -12,6 +12,24 @@ const WhatsAppButton = lazy(() => import("@/components/gym/WhatsAppButton").then
 const StickyMobileCTA = lazy(() => import("@/components/gym/StickyMobileCTA").then(({ StickyMobileCTA }) => ({ default: StickyMobileCTA })));
 
 const Index = () => {
+  useEffect(() => {
+    const prepareVideoConnection = () => {
+      ["https://www.youtube-nocookie.com", "https://i.ytimg.com"].forEach((href) => {
+        if (document.head.querySelector(`link[href="${href}"]`)) return;
+
+        const link = document.createElement("link");
+        link.rel = "preconnect";
+        link.href = href;
+        link.crossOrigin = "anonymous";
+        document.head.appendChild(link);
+      });
+    };
+
+    // Keep third-party setup out of the critical page-load path.
+    const timeout = window.setTimeout(prepareVideoConnection, 4_000);
+    return () => window.clearTimeout(timeout);
+  }, []);
+
   return (
     <>
       {/* Skip link — invisível até receber foco via tab. WCAG 2.4.1 */}
