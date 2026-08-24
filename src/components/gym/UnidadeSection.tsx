@@ -17,6 +17,8 @@ export const UnidadeSection = () => {
           src={cloudflareImage(imgSrc, 1280)}
           srcSet={cloudflareImageSrcSet(imgSrc, [640, 960, 1280, 1600, 1920])}
           sizes="100vw"
+          width={2400}
+          height={1800}
           fetchPriority="high"
         />
         {/* Overlay com opacidade de 60% */}
