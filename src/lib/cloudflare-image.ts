@@ -1,4 +1,4 @@
-const imageOptions = "format=auto,quality=75,metadata=none";
+const imageOptions = "format=auto,quality=70,metadata=none";
 
 export const cloudflareImage = (src: string, width: number) =>
   `/cdn-cgi/image/width=${width},${imageOptions}${src}`;

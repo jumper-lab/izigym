@@ -1,12 +1,15 @@
+import { lazy, Suspense } from "react";
+import { DeferredSection } from "@/components/DeferredSection";
 import { Header } from "@/components/gym/Header";
 import { UnidadeSection } from "@/components/gym/UnidadeSection";
 import { PlanosSection } from "@/components/gym/PlanosSection";
-import { LocationsSection } from "@/components/gym/LocationsSection";
-import { GallerySection } from "@/components/gym/GallerySection";
-import { FAQSection } from "@/components/gym/FAQSection";
-import { Footer } from "@/components/gym/Footer";
-import { WhatsAppButton } from "@/components/gym/WhatsAppButton";
-import { StickyMobileCTA } from "@/components/gym/StickyMobileCTA";
+
+const LocationsSection = lazy(() => import("@/components/gym/LocationsSection").then(({ LocationsSection }) => ({ default: LocationsSection })));
+const GallerySection = lazy(() => import("@/components/gym/GallerySection").then(({ GallerySection }) => ({ default: GallerySection })));
+const FAQSection = lazy(() => import("@/components/gym/FAQSection").then(({ FAQSection }) => ({ default: FAQSection })));
+const Footer = lazy(() => import("@/components/gym/Footer").then(({ Footer }) => ({ default: Footer })));
+const WhatsAppButton = lazy(() => import("@/components/gym/WhatsAppButton").then(({ WhatsAppButton }) => ({ default: WhatsAppButton })));
+const StickyMobileCTA = lazy(() => import("@/components/gym/StickyMobileCTA").then(({ StickyMobileCTA }) => ({ default: StickyMobileCTA })));
 
 const Index = () => {
   return (
@@ -23,13 +26,31 @@ const Index = () => {
       <main id="conteudo">
         <UnidadeSection />
         <PlanosSection />
-        <LocationsSection />
-        <GallerySection />
-        <FAQSection />
+        <DeferredSection id="pass" minHeight={520}>
+          <Suspense fallback={null}>
+            <LocationsSection />
+          </Suspense>
+        </DeferredSection>
+        <DeferredSection id="galeria" minHeight={700}>
+          <Suspense fallback={null}>
+            <GallerySection />
+          </Suspense>
+        </DeferredSection>
+        <DeferredSection id="faq" minHeight={420}>
+          <Suspense fallback={null}>
+            <FAQSection />
+          </Suspense>
+        </DeferredSection>
       </main>
-      <Footer />
-      <WhatsAppButton />
-      <StickyMobileCTA />
+      <DeferredSection id="contato" minHeight={420}>
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
+      </DeferredSection>
+      <Suspense fallback={null}>
+        <WhatsAppButton />
+        <StickyMobileCTA />
+      </Suspense>
     </>
   );
 };
