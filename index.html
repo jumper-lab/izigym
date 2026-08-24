@@ -41,18 +41,15 @@
     <meta name="twitter:image" content="https://raw.githubusercontent.com/cleitonSam/img/refs/heads/main/IZI%20(2)%20(1).png" />
     <meta name="twitter:image:alt" content="Logo IZI ONE" />
 
-    <!-- Performance: preconnect às origens críticas -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Fontes -->
+    <!-- Carrega a imagem principal antes da inicialização do React. -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap"
       rel="preload"
-      as="style"
-      onload="this.onload=null;this.rel='stylesheet'"
+      as="image"
+      href="/cdn-cgi/image/width=960,format=auto,quality=70,metadata=none/images/hero-izigym.jpg"
+      imagesrcset="/cdn-cgi/image/width=640,format=auto,quality=70,metadata=none/images/hero-izigym.jpg 640w, /cdn-cgi/image/width=960,format=auto,quality=70,metadata=none/images/hero-izigym.jpg 960w, /cdn-cgi/image/width=1280,format=auto,quality=70,metadata=none/images/hero-izigym.jpg 1280w"
+      imagesizes="100vw"
+      fetchpriority="high"
     />
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet" /></noscript>
 
     <!-- Favicon / PWA -->
     <link rel="icon" type="image/png" href="/favicon.png?v=5" />
