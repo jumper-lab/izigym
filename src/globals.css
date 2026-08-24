@@ -188,6 +188,25 @@
   }
 }
 
+@media (min-width: 768px) {
+  @keyframes hero-copy-intro-desktop {
+    from {
+      transform: translateY(10px);
+      filter: blur(2px);
+      clip-path: inset(6% 0 0 0);
+    }
+    to {
+      transform: translateY(0);
+      filter: blur(0);
+      clip-path: inset(-24px);
+    }
+  }
+
+  .hero-copy-intro {
+    animation-name: hero-copy-intro-desktop;
+  }
+}
+
 @keyframes nav-logo-intro {
   from {
     opacity: 0;
