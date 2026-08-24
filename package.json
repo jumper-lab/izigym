@@ -8,6 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
+    "cf:build": "vite build",
+    "cf:deploy": "vite build && wrangler deploy",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -80,6 +82,7 @@
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^6.3.4"
+    "vite": "^6.3.4",
+    "wrangler": "^4.125.0"
   }
 }

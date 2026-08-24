@@ -23,6 +23,7 @@ build/
 .nuxt/
 .cache/
 .vercel/
+.wrangler/
 
 # === Python ===
 __pycache__/
