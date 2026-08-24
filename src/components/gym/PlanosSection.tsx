@@ -93,7 +93,7 @@ export const PlanosSection = () => {
                   title={plan.name}
                   description={plan.description}
                   price={pricing.price}
-                  priceSuffix="/mês"
+                  priceSuffix={pricing.isPromo ? "/1º mês" : "/mês"}
                   buttonText="Matricule-se Agora"
                   isFeatured={plan.name.toLowerCase().includes("prime")}
                   features={plan.features.map((name) => ({ name }))}

@@ -89,19 +89,16 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           <span className="pb-1 text-sm sm:text-base font-medium text-zinc-400">
             {priceSuffix}
           </span>
-          {isPromo && originalPrice && (
-            <span
-              className="pb-1 text-sm font-medium text-zinc-500 line-through decoration-primary/70 decoration-2"
-              aria-label={`Preço original ${originalPrice}`}
-            >
-              {originalPrice}
-            </span>
-          )}
         </div>
         {isPromo && promoLabel && (
           <span className="mt-3 inline-flex rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
             {promoLabel}
           </span>
+        )}
+        {isPromo && originalPrice && (
+          <p className="mt-2 text-sm font-medium text-zinc-400">
+            Depois, {originalPrice}/mês.
+          </p>
         )}
       </div>
 
