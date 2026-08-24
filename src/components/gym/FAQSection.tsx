@@ -87,7 +87,7 @@ const FaqList = ({ items }: { items: typeof faqItems }) => (
 
 export const FAQSection = () => {
   return (
-    <section className="scroll-mt-16 bg-section-gray px-5 sm:px-6 py-16 lg:py-24" id="faq">
+    <section className="bg-section-gray px-5 sm:px-6 py-16 lg:py-24">
       <div className="mx-auto grid max-w-7xl gap-8 lg:gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
         <Reveal className="lg:sticky lg:top-28">
           <span className="mb-4 sm:mb-5 block text-[11px] sm:text-xs uppercase tracking-[0.28em] sm:tracking-[0.3em] text-zinc-500">

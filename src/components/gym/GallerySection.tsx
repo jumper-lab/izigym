@@ -113,7 +113,7 @@ export const GallerySection = () => {
 
   return (
     <>
-      <section className="scroll-mt-16 pt-16 lg:pt-24" id="galeria">
+      <section className="pt-16 lg:pt-24">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
           <Reveal className="max-w-3xl mx-auto mb-10 lg:mb-14 text-center">
             <span className="text-[11px] sm:text-xs uppercase tracking-[0.28em] sm:tracking-[0.3em] text-zinc-400 mb-4 block">
@@ -152,6 +152,8 @@ export const GallerySection = () => {
                     src={cloudflareImage(item.src, 640)}
                     srcSet={cloudflareImageSrcSet(item.src, [320, 480, 640, 960])}
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
+                    width={1200}
+                    height={1800}
                     alt={item.alt}
                     className="h-full w-full object-cover transition-transform duration-1000 ease-soft group-hover:scale-[1.04]"
                     loading="lazy"

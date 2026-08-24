@@ -18,7 +18,7 @@ const locationData = {
 
 export const LocationsSection = () => {
   return (
-    <section className="scroll-mt-16 py-16 px-5 sm:px-6 lg:py-24 max-w-7xl mx-auto" id="pass">
+    <section className="py-16 px-5 sm:px-6 lg:py-24 max-w-7xl mx-auto">
       <Reveal className="text-center max-w-3xl mx-auto mb-10 lg:mb-16">
         <span className="text-[11px] sm:text-xs uppercase tracking-[0.28em] sm:tracking-[0.3em] text-zinc-400 mb-4 block">
           Nossa Unidade
@@ -39,6 +39,8 @@ export const LocationsSection = () => {
           src={cloudflareImage(locationData.imageSrc, 1280)}
           srcSet={cloudflareImageSrcSet(locationData.imageSrc, [640, 960, 1280, 1600])}
           sizes="(max-width: 640px) 100vw, 1200px"
+          width={2200}
+          height={1650}
           alt={`Unidade ${locationData.name}`}
           className="h-[620px] w-full object-cover transition-transform duration-1000 ease-soft group-hover:scale-[1.025] sm:h-[560px] md:h-[500px]"
           loading="lazy"

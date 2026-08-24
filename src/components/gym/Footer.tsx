@@ -4,7 +4,7 @@ import { ScrollToTopLink } from "./ScrollToTopLink";
 
 export const Footer = () => {
   return (
-    <footer id="contato" className="scroll-mt-16 px-5 sm:px-6 pb-32 pt-16 md:pb-16">
+    <footer className="px-5 sm:px-6 pb-32 pt-16 md:pb-16">
       <div className="max-w-7xl mx-auto">
         <div className="grid gap-10 lg:gap-14 lg:grid-cols-[1fr_1.35fr] lg:items-end">
           <div className="max-w-2xl">
