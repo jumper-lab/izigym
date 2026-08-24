@@ -1,5 +1,6 @@
 import React from "react";
 import { ArrowDown, ArrowRight } from "lucide-react";
+import { cloudflareImage, cloudflareImageSrcSet } from "@/lib/cloudflare-image";
 
 export const UnidadeSection = () => {
   const imgSrc = "/images/hero-izigym.jpg";
@@ -13,7 +14,10 @@ export const UnidadeSection = () => {
         <img
           alt="Espaço amplo e bem iluminado da IZI ONE"
           className="hero-bg-intro w-full h-full block object-cover object-center"
-          src={imgSrc}
+          src={cloudflareImage(imgSrc, 1280)}
+          srcSet={cloudflareImageSrcSet(imgSrc, [640, 960, 1280, 1600, 1920])}
+          sizes="100vw"
+          fetchPriority="high"
         />
         {/* Overlay com opacidade de 60% */}
         <div className="hero-scrim-intro absolute inset-0 bg-black/60 pointer-events-none" />

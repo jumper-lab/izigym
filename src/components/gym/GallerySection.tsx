@@ -2,6 +2,7 @@ import React from "react";
 import { Reveal } from "@/components/Reveal";
 import { Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { cloudflareImage, cloudflareImageSrcSet } from "@/lib/cloudflare-image";
 
 const TOUR_VIDEO_ID = "4LyI3_2WWg0";
 
@@ -148,9 +149,13 @@ export const GallerySection = () => {
                   <VideoGalleryItem item={item} iframeRef={videoIframeRef} />
                 ) : (
                   <img
-                    src={item.src}
+                    src={cloudflareImage(item.src, 640)}
+                    srcSet={cloudflareImageSrcSet(item.src, [320, 480, 640, 960])}
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
                     alt={item.alt}
                     className="h-full w-full object-cover transition-transform duration-1000 ease-soft group-hover:scale-[1.04]"
+                    loading="lazy"
+                    decoding="async"
                   />
                 )}
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-80 transition-opacity duration-700 ease-soft group-hover:opacity-95" />
