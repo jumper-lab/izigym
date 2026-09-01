@@ -31,7 +31,7 @@ export const plans: GymPlan[] = [
     name: "Izi Prime",
     description: "Plano completo com benefícios exclusivos IZI Prime.",
     price: 167,
-    promotionalPrice: 8,
+    promotionalPrice: 27,
     promotionalMonths: 1,
     features: [
       "Acesso a qualquer unidade",
