@@ -21,4 +21,4 @@ User-agent: PerplexityBot
 Disallow: /
 
 # Sitemap principal
-Sitemap: https://www.izione.com.br/sitemap.xml
+Sitemap: https://www.izigym.com.br/sitemap.xml
