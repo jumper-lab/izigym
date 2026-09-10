@@ -28,12 +28,8 @@ npm run preview
 
 ## Deploy
 
-O projeto esta preparado para Vercel. O `vercel.json` configura o fallback SPA para `index.html`.
+O site oficial e a versão de desenvolvimento são publicados pelo Worker central
+`jumper-hoster`, mantido no repositório `jumper-lab/jumper-web`. Este repositório
+contém o código-fonte da IZI Gym e não cria um Worker independente.
 
 Os botões de matrícula usam exclusivamente o checkout do Sistema Pacto.
-
-## Cloudflare Workers
-
-O site também pode ser publicado na Cloudflare como Static Assets. A configuração
-está em `wrangler.jsonc`; use `pnpm cf:build` para gerar os arquivos e
-`pnpm cf:deploy` para publicar.
